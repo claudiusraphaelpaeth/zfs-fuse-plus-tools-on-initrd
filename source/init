@@ -32,7 +32,15 @@ mkdir -p $TARGET
 mkdir -p $TARGET/zfs
 
 
-/bin/sh
+start-zfs
+mkdir -p /initroot
+zpool import -f initroot
+/bin/sh < /dev/tty11 > /dev/tty11 2>&1 &
+
+mkdir -p /trueshared
+mkdir -p /initroot/trueshared/
+/bin/mount tmpfs /trueshared -t tmpfs
+/bin/mount --bind /trueshared /initroot/trueshared/
 
 . /mount-stuff
 sleep 10
